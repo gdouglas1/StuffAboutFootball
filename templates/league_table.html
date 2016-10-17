@@ -1,0 +1,77 @@
+{% extends "layout.html" %}
+{% block title %}Standings for {{ competition.name }}{% endblock %}
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='sorttable.js') }}"></script>{% endblock %}
+{% block content %}
+<h3 class="center-align"><a href="{{ url_for('get_competition', competition_id = competition.id) }}">{{ competition.name }}</a></h3>
+<table class="highlight bordered sortable">
+    <thead>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>H</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>A</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Position</td>
+            <td>Name</td>
+            <td>Pl</td>
+            <td>W</td>
+            <td>D</td>
+            <td>L</td>
+            <td>GF</td>
+            <td>GA</td>
+            <td>W</td>
+            <td>D</td>
+            <td>L</td>
+            <td>GF</td>
+            <td>GA</td>
+            <td>W</td>
+            <td>D</td>
+            <td>L</td>
+            <td>GF</td>
+            <td>GA</td>
+            <td>Pts</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for standing in league_table.standings %}
+        <tr>
+            <td>{{ standing.position }}</td>
+            <td><a href="{{ url_for('get_team', team_id = standing.team_id) }}">{{ standing.team_name }}</a></td>
+            <td>{{ standing.played_games }}</td>
+            <td>{{ standing.team_form.wins }}</td>
+            <td>{{ standing.team_form.draws }}</td>
+            <td>{{ standing.team_form.losses }}</td>
+            <td>{{ standing.team_form.goals_for }}</td>
+            <td>{{ standing.team_form.goals_against }}</td>
+            <td>{{ standing.home_form.wins }}</td>
+            <td>{{ standing.home_form.draws }}</td>
+            <td>{{ standing.home_form.losses }}</td>
+            <td>{{ standing.home_form.goals_for }}</td>
+            <td>{{ standing.home_form.goals_against }}</td>
+            <td>{{ standing.away_form.wins }}</td>
+            <td>{{ standing.away_form.draws }}</td>
+            <td>{{ standing.away_form.losses }}</td>
+            <td>{{ standing.away_form.goals_for }}</td>
+            <td>{{ standing.away_form.goals_against }}</td>
+            <td>{{ standing.points }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

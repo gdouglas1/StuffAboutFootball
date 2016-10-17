@@ -1,0 +1,16 @@
+<table class="highlight bordered sortable" id="tblResults">
+<thead>
+    <tr>
+        <td>Date</td>
+        <td>Home Team</td>
+        <td>Away Team</td>
+    </tr>
+</thead>
+{% for fixture in fixtures_list %}
+<tr>
+    <td><a href="{{ url_for('get_fixture', fixture_id = fixture.fixture_id) }}">{{ fixture.fixture_date }}</a></td>
+    <td><a href="{{ url_for('get_team', team_id = fixture.home_team_id) }}">{{ fixture.home_team_name }}</a></td>
+    <td><a href="{{ url_for('get_team', team_id = fixture.away_team_id) }}">{{ fixture.away_team_name }}</a></td>
+</tr>
+{% endfor %}
+</table>

@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}Competitions{% endblock %}
+{% block content %}
+<table class="highlight">
+    <thead>
+        <tr>
+            <td>Name</td>
+            <td>Year</td>
+        </tr>
+    </thead>
+    {% for competition in competitions %}
+    <tr>
+        <td><a href="{{ url_for('get_competition', competition_id = competition.id) }}">{{ competition.name }}</a></td>
+        <td>{{ competition.year }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

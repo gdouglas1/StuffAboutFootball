@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link style="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Compiled and minified JavaScript -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% block head %}
+    {% endblock %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <!-- Header -->
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper red accent-3">
+                <img style='height: 95%; object-fit: contain' src="{{ url_for('static', filename='images/logo.png') }}">
+                <a href="#">Stuff about football</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="{{ url_for('get_competitions') }}">Competitions</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- End of Header -->
+
+    <!-- Content -->
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <!-- End of content -->
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        {% block footer %}
+        {% endblock %}
+    </footer>
+    <!-- End of footer -->
+
+</body>
+</html>

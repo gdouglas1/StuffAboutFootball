@@ -1,0 +1,35 @@
+<!--Partial template that defines the structure of a list of players.  Used for grouped and ungrouped player views-->
+<table class="highlight bordered sortable">
+    <thead>
+        <tr>
+            <td>Jersey Number</td>
+            <td>Name</td>
+            <td>Position</td>
+            <td>Date of Birth</td>
+            <td>Age</td>
+            <td>Nationality</td>
+            <td>Contracted until (duration)</td>
+            <td>Value</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for player in players %}
+        <tr>
+            <td>{{ player.jersey_number }}</td>
+            <td>{{ player.name }}</td>
+            <td>{{ player.position }}</td>
+            <td>{{ player.dob }}</td>
+            <td>{{ player.age }}</td>
+            <td>{{ player.nationality }}</td>
+            <td>
+                {% if player.contract_until is not none %}
+                {{ player.contract_until }} ({{ player.contract_duration_years }} years)
+                {% else %}
+                N/A
+                {% endif %}
+            </td>
+            <td>{{ player.market_value }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

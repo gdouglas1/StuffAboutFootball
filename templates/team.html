@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container">
+    <!--TODO: Make image responsive-->
+    <img width="200px" height="200px" src="{{ team.crest_url }}">
+    <p>Name: {{ team.name }} {% if team.short_name is not none %} ({{ team.short_name }}) {% endif %}</p>
+    <p>{% if team.market_value is not none %} Market Value: {{ team.market_value }} {% endif %}</p>
+    <a href="{{ url_for('get_players_for_team_grouped', team_id = team.id) }}">Players</a><br />
+    <a href="{{ url_for('get_fixtures_for_team', team_id = team.id) }}">Fixtures</a>
+</div>
+{% endblock %}

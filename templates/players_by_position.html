@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+{% block title %}{{ team.name }} Players {% endblock %}
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='sorttable.js') }}"></script>{% endblock %}
+{% block content %}
+<h3 class="center-align"><a href="{{ url_for('get_team', team_id = team.id) }}">{{ team.name }}</a></h3>
+<br/>
+<a href="{{ url_for('get_players_for_team_ungrouped', team_id = team.id) }}">Full list</a>
+{% for position in players_grouped %}
+{% set players = players_grouped[position] %}
+<ul class="collapsible popout" data-collapsible="expandable">
+    <li>
+        <div class="collapsible-header">{{ position }}</div>
+        <div class="collapsible-body">
+            {% include "partials/player_list.html" %}
+        </div>
+    </li>
+
+    {% endfor %}
+</ul>
+{% endblock %}

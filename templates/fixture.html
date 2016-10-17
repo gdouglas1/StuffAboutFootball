@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block title %}Fixtures for {{ competition.name }}{% endblock %}
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='sorttable.js') }}"></script>{% endblock %}
+{% block content %}
+<h3 class="center-align"><a href="{{ url_for('get_competition', competition_id = competition.id) }}">{{ competition.name }}</a></h3>
+<div class="row">
+    <div class="col s4">
+        <h5>Home</h5>
+        <img src="{{ home_team.crest_url }}" height="150px" width="150px">
+        <h4>{{ home_team.name }}</h4>
+        {% if fixture.head_to_head.last_win_home_team is not none and fixture.head_to_head.last_win_home_team.result is not none %}
+        Last win vs. {{ fixture.head_to_head.last_win_home_team.away_team_name }}:
+        <a href="{{ url_for('get_fixture', fixture_id = fixture.head_to_head.last_win_home_team.fixture_id) }}">
+            {{ fixture.head_to_head.last_win_home_team.result.home_team_goals }}:{{ fixture.head_to_head.last_win_home_team.result.away_team_goals }} ({{ fixture.head_to_head.last_win_home_team.fixture_date }})
+        </a>
+        {% endif %}
+        {% if fixture.head_to_head.last_home_win_home_team is not none and fixture.head_to_head.last_home_win_home_team.result is not none %}
+        <br />Last Home win vs {{ fixture.head_to_head.last_home_win_home_team.away_team_name }}:
+        <a href="{{ url_for('get_fixture', fixture_id = fixture.head_to_head.last_home_win_home_team.fixture_id) }}">
+            {{ fixture.head_to_head.last_home_win_home_team.result.home_team_goals }}:{{ fixture.head_to_head.last_home_win_home_team.result.away_team_goals }} ({{ fixture.head_to_head.last_home_win_home_team.fixture_date }})
+        </a>
+        {% endif %}
+    </div>
+
+    <div class="col s4 center-align">
+        <h4>{{ fixture.fixture_date }}</h4>
+        {% if fixture.result.home_team_goals is not none and fixture.result.away_team_goals is not none %}
+        <h4>{{ fixture.result.home_team_goals }} : {{ fixture.result.away_team_goals }}</h4>
+        {% endif %}
+    </div>
+
+    <div class="col s4 right-align">
+        <h5>Away</h5>
+        <img src="{{ away_team.crest_url }}" height="150px" width="150px">
+        <h4>{{ away_team.name }}</h4>
+        {% if fixture.head_to_head.last_win_away_team is not none and fixture.head_to_head.last_win_away_team.result is not none %}
+        Last win vs. {{ fixture.head_to_head.last_win_away_team.home_team_name }}:
+        <a href="{{ url_for('get_fixture', fixture_id = fixture.head_to_head.last_win_away_team.fixture_id) }}">
+            {{ fixture.head_to_head.last_win_away_team.result.away_team_goals }}:{{ fixture.head_to_head.last_win_away_team.result.home_team_goals }} ({{ fixture.head_to_head.last_win_away_team.fixture_date }})
+        </a>
+
+        {% endif %}
+
+        {% if fixture.head_to_head.last_away_win_away_team is not none and fixture.head_to_head.last_away_win_away_team.result is not none %}
+        <br />Last Away win vs. {{ fixture.head_to_head.last_away_win_away_team.home_team_name }}:
+        <a href="{{ url_for('get_fixture', fixture_id = fixture.head_to_head.last_away_win_away_team.fixture_id)}}">
+            {{ fixture.head_to_head.last_away_win_away_team.result.away_team_goals }}:{{ fixture.head_to_head.last_away_win_away_team.result.home_team_goals }} ({{ fixture.head_to_head.last_away_win_away_team.fixture_date }})
+        </a>
+        {% endif %}
+    </div>
+</div>
+<h4>Head-to-Head</h4>
+<h5>Stats</h5>
+<div class="row">
+    <div class="col s4 left-align">
+        {{ fixture.home_team_name }} Wins: {{ fixture.head_to_head.home_wins }}
+    </div>
+    <div class="col s4 center-align">
+        Draws: {{ fixture.head_to_head.draws }}
+    </div>
+    <div class="col s4 right-align">
+        {{ fixture.away_team_name }} Wins: {{ fixture.head_to_head.away_wins }}
+
+    </div>
+</div>
+<br />
+<h5>Previous fixtures</h5>
+{% set results_list = fixture.head_to_head.fixtures %}
+{% include "partials/result_list.html" %}
+{% endblock %}

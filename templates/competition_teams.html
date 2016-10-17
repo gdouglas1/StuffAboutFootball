@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block title %}Teams for {{ competition.caption }}{% endblock %}
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='sorttable.js') }}"></script>{% endblock %}
+{% block content %}
+<table class="highlight bordered sortable">
+    <thead>
+        <tr>
+            <td><!-- Flag --></td>
+            <td>Name</td>
+            <td>Market Value</td>
+            <td><!-- Fixtures --></td>
+            <td><!-- Players --></td>
+        </tr>
+    </thead>
+    {% for team in teams %}
+    <tr>
+        <!-- TODO: make the image responsive -->
+        <td height="75px" width="75px"><img width="75px" height="75px" src="{{ team.crest_url }}"></td>
+        <td>
+            {% if team.id is not none %}
+                <a href="{{ url_for('get_team', team_id = team.id) }}">{{ team.name }} {% if team.shortName is not none %} {{ team.shortName }} {% endif %}</a>
+            {% endif %}
+        </td>
+        <td>{% if team.market_value is not none %} {{ team.market_value }} {% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
