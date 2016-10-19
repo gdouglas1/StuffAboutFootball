@@ -197,7 +197,8 @@ def get_fixture(fixture_id):
 
 def get_league_table(competition_id):
     """
-    Retrieves league table data for the specified competition ID, and returns a LeagueTable object
+    Retrieves league table data for the specified competition ID, and returns a LeagueTable object for normal leagues
+    Returns a list of LeagueTable objects if competition is a tournament e.g Euro 2016
     :rtype: LeagueTable
     :param competition_id:
     :return:
@@ -205,6 +206,5 @@ def get_league_table(competition_id):
     response = make_request("competitions/" + str(competition_id) + "/leagueTable")
     json_dict = json.loads(response.text)
 
-    leagueTable = decoders.to_leaguetable(json_dict)
-
-    return leagueTable
+    league_table = decoders.to_leaguetable(json_dict)
+    return league_table

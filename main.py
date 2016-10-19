@@ -2,6 +2,7 @@ import operator
 
 from flask import Flask, render_template
 import footballapi
+from model import LeagueTable
 
 app = Flask(__name__)
 
@@ -98,7 +99,12 @@ def get_table_for_competition(competition_id):
     competition = footballapi.get_competition(competition_id)
     league_table = footballapi.get_league_table(competition_id)
 
-    return render_template("league_table.html", **locals())
+    # Check if returned league_table object is a single table, or list of tables
+    # Use normal template if single table, or competition template for group of tables
+    if type(league_table) is LeagueTable:
+        return render_template("league_table.html", **locals())
+    else:
+        return render_template("competition_league_table.html", **locals())
 
 
 @app.route("/Teams/<int:team_id>")

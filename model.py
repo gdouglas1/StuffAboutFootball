@@ -129,8 +129,20 @@ class Standing:
 
 class TeamForm:
     def __init__(self, wins, draws, losses, goals_for, goals_against):
-        self.wins = int(wins)
-        self.draws = int(draws)
-        self.losses = int(losses)
+        if wins is not None:
+            self.wins = int(wins)
+        else:
+            self.wins = None
+
+        if draws is not None:
+            self.draws = int(draws)
+        else:
+            self.draws = None
+
+        if losses is not None:
+            self.losses = int(losses)
+        else:
+            self.losses = None
+
         self.goals_for = int(goals_for)
         self.goals_against = int(goals_against)

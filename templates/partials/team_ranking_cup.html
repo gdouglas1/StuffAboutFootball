@@ -1,0 +1,33 @@
+<h5>Group {{ league }}</h5>
+
+<table class="highlight bordered sortable leagueTable">
+    <colgroup>
+        <col style="width: 10%">
+        <col style="width: 50%">
+        <col>
+        <col>
+        <col>
+    </colgroup>
+    <thead>
+        <tr>
+            <th>Pos</th>
+            <th>Name</th>
+            <th>Played</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>Pts</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for standing in league_table[league].standings %}
+        <tr>
+            <td class="positionCol">{{ standing.position }}</td>
+            <td class="teamNameCol"><a href="{{ url_for('get_team', team_id = standing.team_id) }}">{{ standing.team_name }}</a></td>
+            <td>{{ standing.played_games }}</td>
+            <td>{{ standing.team_form.goals_for }}</td>
+            <td>{{ standing.team_form.goals_against }}</td>
+            <td>{{ standing.points }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>

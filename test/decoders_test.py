@@ -225,7 +225,7 @@ class DecoderTestCase(unittest.TestCase):
                         "}"
 
         json_dict = json.loads(standing_json)
-        standing = decoders.to_standing(json_dict)
+        standing = decoders.to_leaguetable_standing(json_dict)
 
         self.assertEqual(standing.team_name, "Manchester City FC")
         self.assertEqual(standing.team_id, "65")

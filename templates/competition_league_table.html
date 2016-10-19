@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block title %}Standings for {{ competition.name }}{% endblock %}
+{% block head %}<script type="text/javascript" src="{{ url_for('static', filename='sorttable.js') }}"></script>{% endblock %}
+{% block content %}
+<h3 class="center-align"><a href="{{ url_for('get_competition', competition_id = competition.id) }}">{{ competition.name }}</a></h3>
+{% for league in league_table %}
+{% include "partials/team_ranking_cup.html" %}
+<br />
+{% endfor %}
+{% endblock %}

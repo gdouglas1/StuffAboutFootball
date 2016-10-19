@@ -1,3 +1,5 @@
+import collections
+
 from model import Player, Fixture, Result, TeamForm, Standing, Competition, HeadToHead, LeagueTable, Team
 
 
@@ -167,7 +169,7 @@ def to_headtohead(json_dict):
     return head2head
 
 
-def to_standing(json_dict):
+def to_leaguetable_standing(json_dict):
     """
     Converts json dictionary to Standing object
     :rtype: Standing
@@ -200,7 +202,64 @@ def to_leaguetable(json_dict):
     if json_dict is None:
         return None
 
-    standings = [to_standing(standing_json) for standing_json in json_dict['standing']]
-    result = LeagueTable(standings)
+    if 'standings' in json_dict:
+        league_tables = to_cup_leaguetables(json_dict)
+        return league_tables
+    else:
+        standings = [to_leaguetable_standing(standing_json) for standing_json in json_dict['standing']]
+        result = LeagueTable(standings)
+        return result
+
+
+def to_cup_leaguetables(json_dict):
+    """
+    Converts json dictionary to list of LeagueTable objects
+    :param json_dict:
+    """
+    league_dict = {}
+
+    for league in json_dict['standings']:
+        standings = [to_cup_standing(standing_json) for standing_json in json_dict['standings'][league]]
+        league_table = LeagueTable(standings)
+        if league not in league_dict:
+            league_dict[league] = []
+        league_dict[league] = league_table
+
+    # Order league tables by name
+    result = collections.OrderedDict(sorted(league_dict.items()))
+
+    return result
+
+
+def to_cup_standing(json_dict):
+    """
+    Converts json dictionary to Standing object
+    :rtype: Standing
+    :param json_dict:
+    :return:
+    """
+    if json_dict is None:
+        return None
+
+    team_form = to_cup_teamform(json_dict)
+
+    standing = Standing(json_dict['teamId'], json_dict['team'], json_dict['rank'], json_dict['playedGames'],
+                        json_dict['goals'], json_dict['points'], team_form, None, None)
+
+    return standing
+
+
+def to_cup_teamform(json_dict):
+    """
+        Converts json dictionary into TeamForm object
+        :rtype: TeamForm
+        :param json_dict:
+        :return:
+        """
+    if json_dict is None:
+        return None
+
+    result = TeamForm(None, None, None, json_dict['goals'],
+                      json_dict['goalsAgainst'])
 
     return result
