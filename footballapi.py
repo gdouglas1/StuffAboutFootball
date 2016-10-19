@@ -21,13 +21,13 @@ def make_request(endpoint: str) -> requests.Response:
     return requests.get(base_url + endpoint, headers={"X-Auth-Token": api_key})
 
 
-def group_fixtures_by_match_day(fixtures: List[Fixture]) -> Dict[int, List[Fixture]]:
+def group_fixtures_by_match_day(fixtures: List[Fixture]) -> Dict[str, List[Fixture]]:
     """
     Takes a list of Fixture objects, and groups them by matchday
     :param fixtures:
     :return:
     """
-    result = collections.OrderedDict()
+    result = collections.OrderedDict()  # type: Dict[str, List[Fixture]]
     for fixture in fixtures:
         key = str(fixture.match_day)
         if key not in result:
@@ -47,7 +47,7 @@ def group_players_by_position(players: List[Player]) -> Dict[str, List[Player]]:
     position_order = {k: v for v, k in enumerate(["Keeper", "Centre Back", "Left-Back", "Right-Back", 
                                                   "Defensive Midfield", "Central Midfield", "Left Wing", "Right Wing", 
                                                   "Attacking Midfield", "Centre Forward", "Secondary Striker"])}
-    result = collections.OrderedDict()
+    result = collections.OrderedDict()  # type: Dict[str, List[Player]]
     for player in players:
         key = player.position
         if key not in result:

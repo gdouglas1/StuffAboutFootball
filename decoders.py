@@ -185,7 +185,7 @@ def to_leaguetable_standing(json_dict: dict) -> Standing:
     return standing
 
 
-def to_league_table(json_dict: dict) -> Union[LeagueTable, List[LeagueTable]]:
+def to_league_table(json_dict: dict) -> Union[LeagueTable, Dict[str, LeagueTable]]:
     """
     Converts json dictionary to LeagueTable object, or list of LeagueTable objects depending on the contents
     of json_dict
@@ -210,13 +210,11 @@ def to_cup_league_tables(json_dict: dict) -> Dict[str, LeagueTable]:
     Dictionary will be ordered by name
     :param json_dict:
     """
-    league_dict = {}
+    league_dict = {}  # type: Dict[str, LeagueTable]
 
     for league in json_dict['standings']:
         standings = [to_cup_standing(standing_json) for standing_json in json_dict['standings'][league]]
         league_table = LeagueTable(standings)
-        if league not in league_dict:
-            league_dict[league] = []
         league_dict[league] = league_table
 
     # Order league tables by name

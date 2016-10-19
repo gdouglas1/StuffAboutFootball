@@ -62,15 +62,15 @@ def get_fixtures_for_competition(competition_id: int):
     page_title = competition.name
     title_id = competition_id
 
-    fixtures = footballapi.get_fixtures_for_competition(competition_id)
+    all_fixtures = footballapi.get_fixtures_for_competition(competition_id)
 
-    results = [x for x in fixtures if x.fixture_status == "FINISHED"]
-    results.sort(key=operator.attrgetter('match_day'), reverse=True)
-    results = footballapi.group_fixtures_by_match_day(results)
+    ungrouped_results = [x for x in all_fixtures if x.fixture_status == "FINISHED"]
+    ungrouped_results.sort(key=operator.attrgetter('match_day'), reverse=True)
+    results = footballapi.group_fixtures_by_match_day(ungrouped_results)
 
-    fixtures = [x for x in fixtures if x.fixture_status != "FINISHED"]
-    fixtures.sort(key=operator.attrgetter('match_day'))
-    fixtures = footballapi.group_fixtures_by_match_day(fixtures)
+    ungrouped_fixtures = [x for x in all_fixtures if x.fixture_status != "FINISHED"]
+    ungrouped_fixtures.sort(key=operator.attrgetter('match_day'))
+    fixtures = footballapi.group_fixtures_by_match_day(ungrouped_fixtures)
 
     return render_template("fixtures.html", **locals())
 
@@ -84,8 +84,8 @@ def get_fixture(fixture_id: int):
     """
     fixture = footballapi.get_fixture(fixture_id)
     competition = footballapi.get_competition(fixture.competition_id)
-    home_team = footballapi.get_team(fixture.home_team_id)
-    away_team = footballapi.get_team(fixture.away_team_id)
+    home_team = footballapi.get_team(int(fixture.home_team_id))
+    away_team = footballapi.get_team(int(fixture.away_team_id))
     return render_template("fixture.html", **locals())
 
 
@@ -121,15 +121,15 @@ def get_fixtures_for_team(team_id: int):
     page_title = team.name
     title_id = team_id
 
-    fixtures = footballapi.get_fixtures_for_team(team_id)
+    all_fixtures = footballapi.get_fixtures_for_team(team_id)
 
-    results = [x for x in fixtures if x.fixture_status == "FINISHED"]
-    results.sort(key=operator.attrgetter('match_day'), reverse=True)
-    results = footballapi.group_fixtures_by_match_day(results)
+    ungrouped_results = [x for x in all_fixtures if x.fixture_status == "FINISHED"]
+    ungrouped_results.sort(key=operator.attrgetter('match_day'), reverse=True)
+    results = footballapi.group_fixtures_by_match_day(ungrouped_results)
 
-    fixtures = [x for x in fixtures if x.fixture_status != "FINISHED"]
-    fixtures.sort(key=operator.attrgetter('match_day'))
-    fixtures = footballapi.group_fixtures_by_match_day(fixtures)
+    ungrouped_fixtures = [x for x in all_fixtures if x.fixture_status != "FINISHED"]
+    ungrouped_fixtures.sort(key=operator.attrgetter('match_day'))
+    fixtures = footballapi.group_fixtures_by_match_day(ungrouped_fixtures)
 
     return render_template("fixtures.html", **locals())
 

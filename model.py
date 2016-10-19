@@ -1,6 +1,6 @@
 import operator
 from datetime import datetime
-from typing import Union, List
+from typing import Union, List, Optional
 
 
 class Competition:
@@ -38,7 +38,7 @@ class Player:
             if contract_duration < 1:
                 self.contract_duration_years = "< 1"
             else:
-                self.contract_duration_years = contract_duration
+                self.contract_duration_years = str(contract_duration)
         else:
             self.contract_until = None
             self.contract_duration_years = None
@@ -47,8 +47,8 @@ class Player:
 
 
 class Result:
-    def __init__(self, home_team_goals: Union[str, None], away_team_goals: Union[str, None],
-                 halftime_home_team_goals: Union[str, None], halftime_away_team_goals: Union[str, None]) -> None:
+    def __init__(self, home_team_goals: Optional[str], away_team_goals: Optional[str],
+                 halftime_home_team_goals: Optional[str], halftime_away_team_goals: Optional[str]) -> None:
         if home_team_goals is not None:
             self.home_team_goals = int(home_team_goals)
         else:
@@ -72,7 +72,7 @@ class Result:
 
 class Fixture:
     def __init__(self, fixture_id: int, competition_id: int, fixture_date: str, fixture_status: str,
-                 home_team_name: str, home_team_id: str, away_team_name: str, away_team_id: str, result: Result,
+                 home_team_name: str, home_team_id: int, away_team_name: str, away_team_id: int, result: Result,
                  head_to_head: 'HeadToHead', match_day: str) -> None:
         self.fixture_id = fixture_id
         self.competition_id = competition_id
@@ -114,29 +114,15 @@ class HeadToHead:
         self.fixtures = fixtures
 
 
-class Standing:
-    def __init__(self, team_id: object, team_name: object, position: object, played_games: object, goals: object,
-                 points: object, team_form: object, home_form: object, away_form: object) -> None:
-        self.team_id = team_id
-        self.team_name = team_name
-        self.position = position
-        self.played_games = played_games
-        self.goals = int(goals)
-        self.points = int(points)
-        self.team_form = team_form
-        self.home_form = home_form
-        self.away_form = away_form
-
-
 class LeagueTable:
-    def __init__(self, standings: List[Standing]) -> None:
+    def __init__(self, standings: List['Standing']) -> None:
         # Default ordering will always be by position in the table
         self.standings = sorted(standings, key=operator.attrgetter('position'))
 
 
 class TeamForm:
-    def __init__(self, wins: Union[int, None], draws: Union[int, None], losses: Union[int, None],
-                 goals_for: Union[int, None], goals_against: Union[int, None]) -> None:
+    def __init__(self, wins: Optional[int], draws: Optional[int], losses: Optional[int],
+                 goals_for: Optional[int], goals_against: Optional[int]) -> None:
         if wins is not None:
             self.wins = int(wins)
         else:
@@ -154,3 +140,17 @@ class TeamForm:
 
         self.goals_for = int(goals_for)
         self.goals_against = int(goals_against)
+
+
+class Standing:
+    def __init__(self, team_id: int, team_name: str, position: int, played_games: int, goals: int,
+                 points: int, team_form: TeamForm, home_form: TeamForm, away_form: TeamForm) -> None:
+        self.team_id = team_id
+        self.team_name = team_name
+        self.position = position
+        self.played_games = played_games
+        self.goals = goals
+        self.points = points
+        self.team_form = team_form
+        self.home_form = home_form
+        self.away_form = away_form
