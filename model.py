@@ -20,11 +20,14 @@ class Team:
 
 
 class Player:
-    def __init__(self, name: str, position: str, jersey_number: str, dob: str, nationality: str, contract_until: str,
+    def __init__(self, name: str, position: str, jersey_number: Optional[str], dob: str, nationality: str, contract_until: str,
                  market_value: str) -> None:
         self.name = name
         self.position = position
-        self.jersey_number = int(jersey_number)
+        if jersey_number is None:
+            self.jersey_number = None
+        else:
+            self.jersey_number = int(jersey_number)
         self.dob = datetime.strftime(datetime.strptime(dob, "%Y-%m-%d"), "%d/%m/%Y")
         self.age = (datetime.now() - datetime.strptime(dob, "%Y-%m-%d")).days // 365
         self.nationality = nationality
