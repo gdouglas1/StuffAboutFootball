@@ -1,16 +1,17 @@
 import operator
 from datetime import datetime
+from typing import Union, List
 
 
 class Competition:
-    def __init__(self, id, name, year):
+    def __init__(self, id: int, name: str, year: str) -> None:
         self.id = id
         self.name = name
         self.year = year
 
 
 class Team:
-    def __init__(self, id, name, short_name, market_value, crest_url):
+    def __init__(self, id: int, name: str, short_name: str, market_value: str, crest_url: str) -> None:
         self.id = id
         self.name = name
         self.short_name = short_name
@@ -19,7 +20,8 @@ class Team:
 
 
 class Player:
-    def __init__(self, name, position, jersey_number, dob, nationality, contract_until, market_value):
+    def __init__(self, name: str, position: str, jersey_number: str, dob: str, nationality: str, contract_until: str,
+                 market_value: str) -> None:
         self.name = name
         self.position = position
         self.jersey_number = int(jersey_number)
@@ -44,30 +46,9 @@ class Player:
         self.market_value = market_value
 
 
-class Fixture:
-    def __init__(self, fixture_id, competition_id, fixture_date, fixture_status, home_team_name, home_team_id,
-                 away_team_name, away_team_id, result, head_to_head, match_day):
-        self.fixture_id = fixture_id
-        self.competition_id = competition_id
-        self.fixture_date = datetime.strptime(fixture_date,  "%Y-%m-%dT%H:%M:%SZ").strftime('%d/%m/%Y')
-        self.fixture_actual_date = datetime.strptime(fixture_date,  "%Y-%m-%dT%H:%M:%SZ")
-        self.fixture_status = fixture_status
-        self.home_team_name = home_team_name
-        self.home_team_id = home_team_id
-        self.away_team_name = away_team_name
-        self.away_team_id = away_team_id
-
-        # Result object
-        self.result = result
-
-        # Head to Head object
-        self.head_to_head = head_to_head
-
-        self.match_day = int(match_day)
-
-
 class Result:
-    def __init__(self, home_team_goals, away_team_goals, halftime_home_team_goals, halftime_away_team_goals):
+    def __init__(self, home_team_goals: Union[str, None], away_team_goals: Union[str, None],
+                 halftime_home_team_goals: Union[str, None], halftime_away_team_goals: Union[str, None]) -> None:
         if home_team_goals is not None:
             self.home_team_goals = int(home_team_goals)
         else:
@@ -89,9 +70,33 @@ class Result:
             self.halftime_away_team_goals = None
 
 
+class Fixture:
+    def __init__(self, fixture_id: int, competition_id: int, fixture_date: str, fixture_status: str,
+                 home_team_name: str, home_team_id: str, away_team_name: str, away_team_id: str, result: Result,
+                 head_to_head: 'HeadToHead', match_day: str) -> None:
+        self.fixture_id = fixture_id
+        self.competition_id = competition_id
+        self.fixture_date = datetime.strptime(fixture_date,  "%Y-%m-%dT%H:%M:%SZ").strftime('%d/%m/%Y')
+        self.fixture_actual_date = datetime.strptime(fixture_date,  "%Y-%m-%dT%H:%M:%SZ")
+        self.fixture_status = fixture_status
+        self.home_team_name = home_team_name
+        self.home_team_id = home_team_id
+        self.away_team_name = away_team_name
+        self.away_team_id = away_team_id
+
+        # Result object
+        self.result = result
+
+        # Head to Head object
+        self.head_to_head = head_to_head
+
+        self.match_day = int(match_day)
+
+
 class HeadToHead:
-    def __init__(self, count, date_start, date_end, home_wins, away_wins, draws, last_home_win_home_team,
-                 last_win_home_team, last_away_win_away_team, last_win_away_team, fixtures):
+    def __init__(self, count: int, date_start: str, date_end: str, home_wins: str, away_wins: str, draws: str,
+                 last_home_win_home_team: Fixture, last_win_home_team: Fixture, last_away_win_away_team: Fixture,
+                 last_win_away_team: Fixture, fixtures: List[Fixture]) -> None:
         self.count = count
         self.date_start = date_start
         self.date_end = date_end
@@ -108,14 +113,10 @@ class HeadToHead:
         # List of fixtures
         self.fixtures = fixtures
 
-class LeagueTable:
-    def __init__(self, standings):
-        # Default ordering will always be by position in the table
-        self.standings = sorted(standings, key=operator.attrgetter('position'))
-
 
 class Standing:
-    def __init__(self, team_id, team_name, position, played_games, goals, points, team_form, home_form, away_form):
+    def __init__(self, team_id: object, team_name: object, position: object, played_games: object, goals: object,
+                 points: object, team_form: object, home_form: object, away_form: object) -> None:
         self.team_id = team_id
         self.team_name = team_name
         self.position = position
@@ -127,8 +128,15 @@ class Standing:
         self.away_form = away_form
 
 
+class LeagueTable:
+    def __init__(self, standings: List[Standing]) -> None:
+        # Default ordering will always be by position in the table
+        self.standings = sorted(standings, key=operator.attrgetter('position'))
+
+
 class TeamForm:
-    def __init__(self, wins, draws, losses, goals_for, goals_against):
+    def __init__(self, wins: Union[int, None], draws: Union[int, None], losses: Union[int, None],
+                 goals_for: Union[int, None], goals_against: Union[int, None]) -> None:
         if wins is not None:
             self.wins = int(wins)
         else:

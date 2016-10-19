@@ -27,7 +27,7 @@ def get_competitions():
 
 
 @app.route("/Competition/<int:competition_id>")
-def get_competition(competition_id):
+def get_competition(competition_id: int):
     """
     Controller for returning data regarding the specified competition ID
     :param competition_id:
@@ -38,7 +38,7 @@ def get_competition(competition_id):
 
 
 @app.route("/Competition/<int:competition_id>/teams")
-def get_teams_for_competition(competition_id):
+def get_teams_for_competition(competition_id: int):
     """
     Controller for getting all teams taking part in the specified competition
     :param competition_id:
@@ -50,7 +50,7 @@ def get_teams_for_competition(competition_id):
 
 
 @app.route("/Competition/<int:competition_id>/fixtures")
-def get_fixtures_for_competition(competition_id):
+def get_fixtures_for_competition(competition_id: int):
     """
     Controller for retrieving Fixture data for all fixtures for the specified competition
     :param competition_id:
@@ -76,7 +76,7 @@ def get_fixtures_for_competition(competition_id):
 
 
 @app.route("/Fixtures/<int:fixture_id>")
-def get_fixture(fixture_id):
+def get_fixture(fixture_id: int):
     """
     Controller for retrieving Fixture data for the specified fixture ID
     :param fixture_id:
@@ -90,7 +90,7 @@ def get_fixture(fixture_id):
 
 
 @app.route("/Competition/<int:competition_id>/table")
-def get_table_for_competition(competition_id):
+def get_table_for_competition(competition_id: int):
     """
     Controller for retrieving league table info
     :param competition_id:
@@ -108,13 +108,13 @@ def get_table_for_competition(competition_id):
 
 
 @app.route("/Teams/<int:team_id>")
-def get_team(team_id):
+def get_team(team_id: int):
     team = footballapi.get_team(team_id)
     return render_template("team.html", **locals())
 
 
 @app.route("/Teams/<int:team_id>/fixtures")
-def get_fixtures_for_team(team_id):
+def get_fixtures_for_team(team_id: int):
     team = footballapi.get_team(team_id)
 
     fixture_list_type = "team"
@@ -124,18 +124,18 @@ def get_fixtures_for_team(team_id):
     fixtures = footballapi.get_fixtures_for_team(team_id)
 
     results = [x for x in fixtures if x.fixture_status == "FINISHED"]
-    results.sort(key=operator.attrgetter('matchday'), reverse=True)
+    results.sort(key=operator.attrgetter('match_day'), reverse=True)
     results = footballapi.group_fixtures_by_match_day(results)
 
     fixtures = [x for x in fixtures if x.fixture_status != "FINISHED"]
-    fixtures.sort(key=operator.attrgetter('matchday'))
+    fixtures.sort(key=operator.attrgetter('match_day'))
     fixtures = footballapi.group_fixtures_by_match_day(fixtures)
 
     return render_template("fixtures.html", **locals())
 
 
 @app.route("/Teams/<int:team_id>/players/grouped")
-def get_players_for_team_grouped(team_id):
+def get_players_for_team_grouped(team_id: int):
     team = footballapi.get_team(team_id)
     players_grouped = footballapi.get_players_grouped(team_id)
 
@@ -143,7 +143,7 @@ def get_players_for_team_grouped(team_id):
 
 
 @app.route("/Teams/<int:team_id>/players")
-def get_players_for_team_ungrouped(team_id):
+def get_players_for_team_ungrouped(team_id: int):
     team = footballapi.get_team(team_id)
     players = footballapi.get_players_ungrouped(team_id)
 

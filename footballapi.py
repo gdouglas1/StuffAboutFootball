@@ -1,15 +1,18 @@
 import collections
+from typing import Union, List, Dict
+
 import requests
 import json
 
 import decoders
+from model import Player, Fixture, Competition, LeagueTable, Team
 
 api_key = '7b84e542649b417e931fb951f160b7fe'
 base_url = 'http://api.football-data.org/v1/'
 
 
 # region Helper functions
-def make_request(endpoint):
+def make_request(endpoint: str) -> requests.Response:
     """
     Sends a request to the specified endpoint of the base URL
     :param endpoint:
@@ -18,7 +21,7 @@ def make_request(endpoint):
     return requests.get(base_url + endpoint, headers={"X-Auth-Token": api_key})
 
 
-def group_fixtures_by_match_day(fixtures):
+def group_fixtures_by_match_day(fixtures: List[Fixture]) -> Dict[int, List[Fixture]]:
     """
     Takes a list of Fixture objects, and groups them by matchday
     :param fixtures:
@@ -34,7 +37,7 @@ def group_fixtures_by_match_day(fixtures):
     return collections.OrderedDict(result)
 
 
-def group_players_by_position(players):
+def group_players_by_position(players: List[Player]) -> Dict[str, List[Player]]:
     """
     Takes a list of Player objects, and groups them by position
     :param players:
@@ -55,7 +58,7 @@ def group_players_by_position(players):
 # endregion
 
 
-def get_competitions():
+def get_competitions() -> List[Competition]:
     """
     Retrieves allcompetition data from the web service, and returns it as a list of Competition objects
     :return:
@@ -69,7 +72,7 @@ def get_competitions():
     return result
 
 
-def get_competition(competition_id):
+def get_competition(competition_id: int) -> Competition:
     """
     Retrieves competition data for the specified competition ID from the web service, and returns it as a
     Competition object
@@ -84,7 +87,7 @@ def get_competition(competition_id):
     return result
 
 
-def get_teams_for_competition(competition_id):
+def get_teams_for_competition(competition_id: int) -> List[Team]:
     """
     Retrieves all teams associated to the specified competition ID, and returns a list of Team objects
     :param competition_id:
@@ -98,7 +101,7 @@ def get_teams_for_competition(competition_id):
     return result
 
 
-def get_team(team_id):
+def get_team(team_id: int) -> Team:
     """
     Retrieves the team with the specified team ID from the web service, and returns a Team object
     :param team_id:
@@ -115,7 +118,7 @@ def get_team(team_id):
     return result
 
 
-def get_fixtures_for_competition(competition_id):
+def get_fixtures_for_competition(competition_id: int) -> List[Fixture]:
     """
     Retrieves all fixtures associated to the specified competition ID, and returns a list of Fixture objects
     :param competition_id:
@@ -128,7 +131,7 @@ def get_fixtures_for_competition(competition_id):
     return result
 
 
-def get_fixtures_for_team(team_id):
+def get_fixtures_for_team(team_id: int) -> List[Fixture]:
     """
     Retrieves all fixtures for the associated team ID, and returns a list of Fixture objects
     :param team_id:
@@ -141,9 +144,10 @@ def get_fixtures_for_team(team_id):
     return result
 
 
-def get_players_grouped(team_id):
+def get_players_grouped(team_id: int) -> Dict[str, List[Player]]:
     """
-    Retrieves all players that play for the team with the specified team ID.  Returns a list of Player objects
+    Retrieves all players that play for the team with the specified team ID.  Returns a dictionary of Player objects
+    grouped by position
     :param team_id:
     :return:
     """
@@ -155,10 +159,9 @@ def get_players_grouped(team_id):
     return grouped_result
 
 
-def get_players_ungrouped(team_id):
+def get_players_ungrouped(team_id: int) -> List[Player]:
     """
     Retrieves all players that play for the team with the specified team ID.  Returns a list of Player objects
-    :rtype: list of Player
     :param team_id:
     :return:
     """
@@ -169,11 +172,10 @@ def get_players_ungrouped(team_id):
     return result
 
 
-def get_fixture(fixture_id):
+def get_fixture(fixture_id: int) -> Fixture:
     """
     Retrieves the fixture with the specified fixture ID, and returns a Fixture object including head-to-head data for
     the two teams
-    :rtype: Fixture
     :param fixture_id:
     :return:
     """
@@ -195,16 +197,15 @@ def get_fixture(fixture_id):
     return fixture
 
 
-def get_league_table(competition_id):
+def get_league_table(competition_id: int) -> Union[LeagueTable, Dict[str, LeagueTable]]:
     """
     Retrieves league table data for the specified competition ID, and returns a LeagueTable object for normal leagues
-    Returns a list of LeagueTable objects if competition is a tournament e.g Euro 2016
-    :rtype: LeagueTable
+    Returns a dictionary of LeagueTable objects if competition is a tournament e.g Euro 2016
     :param competition_id:
     :return:
     """
     response = make_request("competitions/" + str(competition_id) + "/leagueTable")
     json_dict = json.loads(response.text)
+    league_table = decoders.to_league_table(json_dict)
 
-    league_table = decoders.to_leaguetable(json_dict)
     return league_table

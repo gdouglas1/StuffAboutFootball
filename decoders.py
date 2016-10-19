@@ -1,12 +1,13 @@
 import collections
 
+from typing import Union, List, Dict
+
 from model import Player, Fixture, Result, TeamForm, Standing, Competition, HeadToHead, LeagueTable, Team
 
 
-def to_competition(json_dict):
+def to_competition(json_dict: dict) -> Competition:
     """
     Converts json dictionary into Competition object
-    :rtype: Competition
     :param json_dict:
     :return:
     """
@@ -18,10 +19,9 @@ def to_competition(json_dict):
     return result
 
 
-def to_competitions(json_dict):
+def to_competitions(json_dict: dict) -> List[Competition]:
     """
     Converts json dictionary to list of Competition objects
-    :rtype: list of Competition
     :param json_dict:
     :return:
     """
@@ -33,10 +33,9 @@ def to_competitions(json_dict):
     return result
 
 
-def to_team(json_dict):
+def to_team(json_dict: dict) -> Team:
     """
     Converts json dictionary to Team object
-    :rtype: Team
     :param json_dict:
     :return: Team
     """
@@ -52,10 +51,9 @@ def to_team(json_dict):
     return result
 
 
-def to_player(json_dict):
+def to_player(json_dict: dict) -> Player:
     """
     Converts json dictionary to Player object
-    :rtype: Player
     :param json_dict:
     :return:
     """
@@ -67,10 +65,9 @@ def to_player(json_dict):
     return result
 
 
-def to_fixture(json_dict):
+def to_fixture(json_dict: dict) -> Fixture:
     """
     Converts json dictionary to Fixture object
-    :rtype: Fixture
     :param json_dict:
     :return:
     """
@@ -103,10 +100,9 @@ def to_fixture(json_dict):
     return fixture
 
 
-def to_result(json_dict):
+def to_result(json_dict: dict) -> Result:
     """
     Converts json dictionary to Result object
-    :rtype: Result
     :param json_dict:
     :return:
     """
@@ -122,10 +118,9 @@ def to_result(json_dict):
     return result
 
 
-def to_teamform(json_dict):
+def to_teamform(json_dict: dict) -> TeamForm:
     """
     Converts json dictionary into TeamForm object
-    :rtype: TeamForm
     :param json_dict:
     :return:
     """
@@ -138,10 +133,9 @@ def to_teamform(json_dict):
     return result
 
 
-def to_headtohead(json_dict):
+def to_headtohead(json_dict: dict) -> HeadToHead:
     """
     Converts json dictionary to HeadToHead object
-    :rtype: HeadToHead
     :param json_dict:
     :return:
     """
@@ -169,10 +163,9 @@ def to_headtohead(json_dict):
     return head2head
 
 
-def to_leaguetable_standing(json_dict):
+def to_leaguetable_standing(json_dict: dict) -> Standing:
     """
     Converts json dictionary to Standing object
-    :rtype: Standing
     :param json_dict:
     :return:
     """
@@ -192,10 +185,10 @@ def to_leaguetable_standing(json_dict):
     return standing
 
 
-def to_leaguetable(json_dict):
+def to_league_table(json_dict: dict) -> Union[LeagueTable, List[LeagueTable]]:
     """
-    Converts json dictionary to LeagueTable object
-    :rtype: LeagueTable
+    Converts json dictionary to LeagueTable object, or list of LeagueTable objects depending on the contents
+    of json_dict
     :param json_dict:
     :return:
     """
@@ -203,7 +196,7 @@ def to_leaguetable(json_dict):
         return None
 
     if 'standings' in json_dict:
-        league_tables = to_cup_leaguetables(json_dict)
+        league_tables = to_cup_league_tables(json_dict)
         return league_tables
     else:
         standings = [to_leaguetable_standing(standing_json) for standing_json in json_dict['standing']]
@@ -211,9 +204,10 @@ def to_leaguetable(json_dict):
         return result
 
 
-def to_cup_leaguetables(json_dict):
+def to_cup_league_tables(json_dict: dict) -> Dict[str, LeagueTable]:
     """
-    Converts json dictionary to list of LeagueTable objects
+    Converts json dictionary to ordered dictionary of league tables.
+    Dictionary will be ordered by name
     :param json_dict:
     """
     league_dict = {}
@@ -231,10 +225,9 @@ def to_cup_leaguetables(json_dict):
     return result
 
 
-def to_cup_standing(json_dict):
+def to_cup_standing(json_dict: dict) -> Standing:
     """
     Converts json dictionary to Standing object
-    :rtype: Standing
     :param json_dict:
     :return:
     """
@@ -249,10 +242,9 @@ def to_cup_standing(json_dict):
     return standing
 
 
-def to_cup_teamform(json_dict):
+def to_cup_teamform(json_dict: dict) -> TeamForm:
     """
         Converts json dictionary into TeamForm object
-        :rtype: TeamForm
         :param json_dict:
         :return:
         """
