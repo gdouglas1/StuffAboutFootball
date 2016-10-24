@@ -5,6 +5,7 @@ import datetime
 
 import decoders
 
+
 class DecoderTestCase(unittest.TestCase):
     def test_to_competition(self):
         competition_json = "{\"_links\":" \
@@ -144,7 +145,7 @@ class DecoderTestCase(unittest.TestCase):
         self.assertEqual(player.name, "Shkodran Mustafi")
         self.assertEqual(player.market_value, "20,000,000 €")
         self.assertEqual(player.age, 24)
-        self.assertEqual(player.contract_duration_years, 4)
+        self.assertEqual(player.contract_duration_years, '4')
         self.assertEqual(player.contract_until, "30/06/2021")
         self.assertEqual(player.dob, "17/04/1992")
         self.assertEqual(player.jersey_number, 20)
@@ -167,7 +168,6 @@ class DecoderTestCase(unittest.TestCase):
         self.assertEqual(result.halftime_away_team_goals, 2)
         self.assertEqual(result.halftime_home_team_goals, 3)
 
-
     def test_to_teamform(self):
         team_form_json = "{\"goals\":9," \
                          "\"goalsAgainst\":2," \
@@ -185,10 +185,8 @@ class DecoderTestCase(unittest.TestCase):
         self.assertEqual(teamform.goals_for, 9)
         self.assertEqual(teamform.goals_against, 2)
 
-
     def test_to_headtohead(self):
         return None
-
 
     def test_to_standing(self):
         standing_json = "{" \
@@ -247,7 +245,6 @@ class DecoderTestCase(unittest.TestCase):
         self.assertEqual(standing.away_form.losses, 1)
         self.assertEqual(standing.away_form.goals_for, 9)
         self.assertEqual(standing.away_form.goals_against, 5)
-
 
     def test_to_fixture(self):
         fixture_json = "{\"_links\":{\"self\":{\"href\":\"http://api.football-data.org/v1/fixtures/150766\"},\"competition\":{\"href\":\"http://api.football-data.org/v1/competitions/426\"},\"homeTeam\":{\"href\":\"http://api.football-data.org/v1/teams/57\"},\"awayTeam\":{\"href\":\"http://api.football-data.org/v1/teams/72\"}},\"date\":\"2016-10-15T00:00:00Z\",\"status\":\"TIMED\",\"matchday\":8,\"homeTeamName\":\"Arsenal FC\",\"awayTeamName\":\"Swansea City FC\",\"result\":{\"goalsHomeTeam\":null,\"goalsAwayTeam\":null},\"odds\":null}"

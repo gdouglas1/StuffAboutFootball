@@ -1,6 +1,6 @@
 import operator
 from datetime import datetime
-from typing import Union, List, Optional
+from typing import List, Optional
 
 
 class Competition:
@@ -20,14 +20,11 @@ class Team:
 
 
 class Player:
-    def __init__(self, name: str, position: str, jersey_number: Optional[str], dob: str, nationality: str, contract_until: str,
-                 market_value: str) -> None:
+    def __init__(self, name: str, position: str, jersey_number: Optional[str], dob: str, nationality: str,
+                 contract_until: str, market_value: str) -> None:
         self.name = name
         self.position = position
-        if jersey_number is None:
-            self.jersey_number = None
-        else:
-            self.jersey_number = int(jersey_number)
+        self.jersey_number = int(jersey_number) or None
         self.dob = datetime.strftime(datetime.strptime(dob, "%Y-%m-%d"), "%d/%m/%Y")
         self.age = (datetime.now() - datetime.strptime(dob, "%Y-%m-%d")).days // 365
         self.nationality = nationality
@@ -50,27 +47,12 @@ class Player:
 
 
 class Result:
-    def __init__(self, home_team_goals: Optional[str], away_team_goals: Optional[str],
-                 halftime_home_team_goals: Optional[str], halftime_away_team_goals: Optional[str]) -> None:
-        if home_team_goals is not None:
-            self.home_team_goals = int(home_team_goals)
-        else:
-            self.home_team_goals = None
-
-        if away_team_goals is not None:
-            self.away_team_goals = int(away_team_goals)
-        else:
-            self.away_team_goals = None
-
-        if halftime_home_team_goals is not None:
-            self.halftime_home_team_goals = int(halftime_home_team_goals)
-        else:
-            self.halftime_home_team_goals = None
-
-        if halftime_away_team_goals is not None:
-            self.halftime_away_team_goals = int(halftime_away_team_goals)
-        else:
-            self.halftime_away_team_goals = None
+    def __init__(self, home_team_goals: Optional[int], away_team_goals: Optional[int],
+                 halftime_home_team_goals: Optional[int], halftime_away_team_goals: Optional[int]) -> None:
+        self.home_team_goals = home_team_goals or 0
+        self.away_team_goals = away_team_goals or 0
+        self.halftime_home_team_goals = halftime_home_team_goals or 0
+        self.halftime_away_team_goals = halftime_away_team_goals or 0
 
 
 class Fixture:
@@ -126,21 +108,9 @@ class LeagueTable:
 class TeamForm:
     def __init__(self, wins: Optional[int], draws: Optional[int], losses: Optional[int],
                  goals_for: Optional[int], goals_against: Optional[int]) -> None:
-        if wins is not None:
-            self.wins = int(wins)
-        else:
-            self.wins = None
-
-        if draws is not None:
-            self.draws = int(draws)
-        else:
-            self.draws = None
-
-        if losses is not None:
-            self.losses = int(losses)
-        else:
-            self.losses = None
-
+        self.wins = int(wins) or 0
+        self.draws = int(draws) or 0
+        self.losses = int(losses) or 0
         self.goals_for = int(goals_for)
         self.goals_against = int(goals_against)
 
